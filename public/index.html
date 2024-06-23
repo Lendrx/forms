@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fahrzeugbestellung</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <form id="orderForm" action="/submit_order" method="post" novalidate>
+        <h1>Fahrzeugbestellung</h1>
+        <div>
+            <label for="brand">Marke:</label>
+            <span class="error-message" id="brandError"></span>
+            <select id="brand" name="brand">
+                <option value="">Bitte wählen</option>
+                <option value="BMW">BMW</option>
+                <option value="Maxus">Maxus</option>
+                <option value="MG">MG</option>
+                <option value="Peugeot">Peugeot</option>
+                <option value="Renault">Renault</option>
+                <option value="XPeng">XPeng</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="orderdate">Auftragsdatum:</label> <!-- Name angepasst -->
+            <span class="error-message" id="orderDateError"></span>
+            <input type="date" id="orderdate" name="orderdate"> <!-- Name angepasst -->
+        </div>
+
+        <div>
+            <label for="salesperson">Verkäufer:</label>
+            <span class="error-message" id="salespersonError"></span>
+            <input type="text" id="salesperson" name="salesperson">
+        </div>
+
+        <div>
+            <label for="grossamount">Bruttobetrag:</label> <!-- Name angepasst -->
+            <span class="error-message" id="grossAmountError"></span>
+            <input type="number" step="0.01" id="grossamount" name="grossamount"> <!-- Name angepasst -->
+        </div>
+
+        <div>
+            <label for="upe">UPE:</label>
+            <span class="error-message" id="upeError"></span>
+            <span id="upeEuroAmount" class="euro-amount"></span>
+            <input type="number" step="0.01" id="upe" name="upe">
+        </div>
+
+        <div>
+            <label for="vehicletype">Fahrzeugtyp:</label> <!-- Name angepasst -->
+            <span class="error-message" id="vehicleTypeError"></span>
+            <input type="text" id="vehicletype" name="vehicletype"> <!-- Name angepasst -->
+        </div>
+
+        <div>
+            <label for="fin">FIN:</label>
+            <span class="error-message" id="finError"></span>
+            <input type="text" id="fin" name="fin">
+        </div>
+
+        <div>
+            <label for="location">Standort:</label>
+            <span class="error-message" id="locationError"></span>
+            <select id="location" name="location">
+                <option value="">Bitte wählen</option>
+                <option value="Aachen">Aachen</option>
+                <option value="Betzdorf">Betzdorf</option>
+                <option value="Brilon">Brilon</option>
+                <option value="Gießen">Gießen</option>
+                <option value="Marburg">Marburg</option>
+                <option value="Siegen">Siegen</option>
+                <option value="Werdohl">Werdohl</option>
+            </select>
+        </div>
+
+        <button type="submit">Bestellung abschicken</button>
+    </form>
+    <script>
+       document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('change', function() {
+                if (this.value.trim() !== '') {
+                    this.classList.add('completed');
+                } else {
+                    this.classList.remove('completed');
+                }
+            });
+        });
+
+        document.getElementById('orderForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Verhindert das Standard-Submit-Verhalten
+
+            let validity = true;
+
+            // Referenzen zu den Eingabefeldern
+            const brand = document.getElementById('brand');
+            const orderDate = document.getElementById('orderdate'); // Referenz angepasst
+            const salesperson = document.getElementById('salesperson');
+            const grossAmount = document.getElementById('grossamount'); // Referenz angepasst
+            const upe = document.getElementById('upe');
+            const vehicleType = document.getElementById('vehicletype'); // Referenz angepasst
+            const fin = document.getElementById('fin');
+            const location = document.getElementById('location');
+
+            // Referenzen zu den Fehlermeldungen
+            const brandError = document.getElementById('brandError');
+            const orderDateError = document.getElementById('orderDateError');
+            const salespersonError = document.getElementById('salespersonError');
+            const grossAmountError = document.getElementById('grossAmountError');
+            const upeError = document.getElementById('upeError');
+            const vehicleTypeError = document.getElementById('vehicleTypeError');
+            const finError = document.getElementById('finError');
+            const locationError = document.getElementById('locationError');
+
+            // Alle Fehlermeldungen zurücksetzen
+            brandError.textContent = '';
+            orderDateError.textContent = '';
+            salespersonError.textContent = '';
+            grossAmountError.textContent = '';
+            upeError.textContent = '';
+            vehicleTypeError.textContent = '';
+            finError.textContent = '';
+            locationError.textContent = '';
+
+            // Überprüfen ob Felder leer sind
+            if (brand.value.trim() === '') {
+                validity = false;
+                brandError.textContent = 'Bitte wählen Sie eine Marke.';
+            }
+            if (orderDate.value.trim() === '') {
+                validity = false;
+                orderDateError.textContent = 'Bitte geben Sie ein Auftragsdatum ein.';
+            }
+            if (salesperson.value.trim() === '') {
+                validity = false;
+                salespersonError.textContent = 'Bitte geben Sie einen Verkäufer ein.';
+            }
+            if (grossAmount.value.trim() === '') {
+                validity = false;
+                grossAmountError.textContent = 'Bitte geben Sie einen Bruttobetrag ein.';
+            }
+            if (upe.value.trim() === '') {
+                validity = false;
+                upeError.textContent = 'Bitte geben Sie eine UPE ein.';
+            } else {
+                // Wenn UPE eingegeben wurde, Eurobetrag anzeigen
+                const euroAmount = parseFloat(upe.value).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+                document.getElementById('upeEuroAmount').textContent = euroAmount;
+            }
+            if (vehicleType.value.trim() === '') {
+                validity = false;
+                vehicleTypeError.textContent = 'Bitte geben Sie einen Fahrzeugtyp ein.';
+            }
+            if (fin.value.trim() === '') {
+                validity = false;
+                finError.textContent = 'Bitte geben Sie eine FIN ein.';
+            }
+            if (location.value.trim() === '') {
+                validity = false;
+                locationError.textContent = 'Bitte wählen Sie einen Standort.';
+            }
+
+            if (validity) {
+                this.submit(); // Formular absenden
+            }
+        });
+    </script>
+</body>
+</html>
