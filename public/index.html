@@ -78,6 +78,39 @@
         <button type="submit">Bestellung abschicken</button>
     </form>
     <script>
+
+                // Funktion zur Überprüfung und Aktualisierung des Buttons
+        function updateSubmitButton() {
+            const form = document.getElementById('orderForm');
+            const inputs = form.querySelectorAll('input, select, textarea');
+            let allCompleted = true;
+
+            inputs.forEach(field => {
+                if (field.value.trim() === '') {
+                    allCompleted = false;
+                }
+            });
+
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (allCompleted) {
+                submitButton.classList.add('complete');
+            } else {
+                submitButton.classList.remove('complete');
+            }
+        }
+
+        // Event Listener für Änderungen in den Feldern
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('change', function() {
+                if (this.value.trim() !== '') {
+                    this.classList.add('completed');
+                } else {
+                    this.classList.remove('completed');
+                }
+                updateSubmitButton(); // Überprüfung bei jeder Änderung aufrufen
+            });
+        });
+
        document.querySelectorAll('input, select, textarea').forEach(field => {
             field.addEventListener('change', function() {
                 if (this.value.trim() !== '') {
@@ -168,3 +201,4 @@
     </script>
 </body>
 </html>
+
