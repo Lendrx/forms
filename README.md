@@ -15,7 +15,7 @@
 
 3. Datenbank konfigurieren:
     - Stelle sicher, dass PostgreSQL installiert ist.
-    - Erstelle eine Datenbank `fahrzeugbestellungen` und eine Tabelle `fahrzeugbestellungen` mit dem SQL-Skript in der Anleitung.
+    - Erstelle eine Datenbank `vehicle_orders` und eine Tabelle `orders` mit dem SQL-Skript in der Anleitung.
 
 4. Server starten:
     ```bash
